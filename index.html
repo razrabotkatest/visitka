@@ -102,6 +102,12 @@ dialog::backdrop{background:rgba(14,59,62,.55)}
 .pol-body li{margin-bottom:.5em}
 .pol-body a{color:var(--teal)}
 .foot .pl{display:inline-block;margin-top:10px;color:var(--teal);font-size:15px;padding:6px 0}
+#call{max-width:480px}
+.call-body{padding:22px 24px 28px;text-align:center}
+.call-body p{color:var(--soft);margin:0 0 18px;font-size:16px}
+.callnum{display:block;font:500 clamp(32px,9vw,42px)/1.1 var(--serif);letter-spacing:.03em;font-variant-numeric:lining-nums tabular-nums;color:var(--ink);margin-bottom:22px;user-select:all}
+.call-body .cta{justify-content:center}
+.call-body .btn{flex:1 1 200px}
 /* photo + text splits */
 .split{display:grid;gap:40px;align-items:center}
 .pic{margin:0;justify-self:center;width:min(80vw,420px);aspect-ratio:4/5;position:relative;isolation:isolate;border-radius:28px}
@@ -228,7 +234,7 @@ details p{padding:0 54px 24px 0;color:var(--soft);max-width:68ch;margin:0}
 
 <section class="alt" id="price"><div class="wrap">
  <h2>Формат и стоимость</h2>
- <p class="lead">Онлайн и очно. Индивидуально и групповые тренинги. Очные встречи — в Краснодаре, район ЖК «Самолёт».</p>
+ <p class="lead">Онлайн и очно. Индивидуально и групповые тренинги.<br>Очные встречи — в Краснодаре, район ЖК «Самолёт».</p>
  <div class="price">
   <div class="pc"><h3>Индивидуальная встреча</h3><b>5 000 ₽</b><span>60 минут. К первой встрече добавляю 30 бесплатных минут</span></div>
   <div class="pc"><h3>Групповой тренинг</h3><b>4 000 ₽</b><span>3 часа</span></div>
@@ -305,6 +311,14 @@ details p{padding:0 54px 24px 0;color:var(--soft);max-width:68ch;margin:0}
   <p><strong>Дата последнего обновления:</strong> 14.10.2026</p>
  </div>
 </dialog>
+<dialog id="call" aria-labelledby="call-title">
+ <div class="pol-head"><h2 id="call-title">Позвонить / Написать</h2><button class="pol-x" type="button" aria-label="Закрыть" data-close>×</button></div>
+ <div class="call-body">
+  <p>С компьютера набрать номер напрямую не получится. Позвоните с телефона или напишите в Телеграм.</p>
+  <span class="callnum">+7 918 203 7807</span>
+  <div class="cta"><button class="btn" type="button" id="copy-num">Скопировать номер</button><a class="btn ghost" href="https://t.me/Dimitrova_Elena" target="_blank" rel="noopener">Телеграм</a></div>
+ </div>
+</dialog>
 <script>
 (function(){var d=document.getElementById('policy'),c=document.getElementById('consent');
 function op(e){if(e)e.preventDefault();if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','')}
@@ -315,6 +329,15 @@ if(location.hash==='#privacy')op();
 var ack=false;try{ack=sessionStorage.getItem('pd-ack')==='1'}catch(e){}
 if(!ack)c.hidden=false;
 c.querySelector('[data-accept]').addEventListener('click',function(){c.hidden=true;try{sessionStorage.setItem('pd-ack','1')}catch(e){}});
+})();
+(function(){var d=document.getElementById('call'),cp=document.getElementById('copy-num'),touch=window.matchMedia&&matchMedia('(hover:none),(pointer:coarse)').matches;
+document.querySelectorAll('a[href^="tel:"]').forEach(function(a){a.addEventListener('click',function(e){if(touch)return;e.preventDefault();if(d.showModal){if(!d.open)d.showModal()}else d.setAttribute('open','')})});
+d.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',function(){d.close()})});
+d.addEventListener('click',function(e){if(e.target===d)d.close()});
+function done(){cp.textContent='Скопировано ✓';setTimeout(function(){cp.textContent='Скопировать номер'},2200)}
+cp.addEventListener('click',function(){var v='+79182037807';
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(done,fb)}else fb();
+function fb(){var x=document.createElement('textarea');x.value=v;x.style.position='fixed';x.style.opacity='0';document.body.appendChild(x);x.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(x)}});
 })();
 (function(){var n=document.getElementById('nav'),b=document.querySelector('.burger');
 function set(o){n.classList.toggle('open',o);b.setAttribute('aria-expanded',o)}
